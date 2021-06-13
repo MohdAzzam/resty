@@ -1,0 +1,22 @@
+
+$fontSizes: (
+        "o25"   :  0.25rem,
+        "o5"    :  0.5rem,
+        "o6"    :  0.6rem,
+        "o625"  :  0.625rem,
+        "o6875" :  0.6875rem,
+        "o75"   :  0.75rem,
+        "o875"  :  0.875rem,
+        "1"     :  1rem,
+        "1o125" :  1.125rem,
+        "1o25"  :  1.25rem,
+        "1o5"   :  1.5rem,
+        "1o75"  :  1.75rem,
+        "2"     :  2rem,
+        "2o25" : 2.25rem,
+        "2o5"   :  2.5rem,
+        "3"     :  3rem,
+);
+
+// Generate Needed Class font-size for waseet
+@include generate-waseet-font-sizes-classes($fontSizes);
