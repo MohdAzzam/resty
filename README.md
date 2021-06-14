@@ -18,5 +18,14 @@ The` <Form>` component should:
     Accept user input for a URL and store it in state
     Allow the user to choose a method and store it in state
 
+User enters an API URL
+
+    Chooses a REST Method
+    Clicks the “Go” button
+    Application fetches data from the URL given, with the method specified
+    Displays the response headers and results separately
+    Both headers and results should be “pretty printed” JSON
 
 ![UML](./cc24.jpeg)
+![UML](./cc27.jpeg)
+
