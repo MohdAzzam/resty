@@ -1,0 +1,38 @@
+$primary-color : #111;
+body{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+header{
+    background-color: $primary-color;
+    height: 100px;
+    h1{
+        color: white;
+        margin:0  auto;
+        padding-top: 25px;
+        text-align: center;
+    }
+    
+        ul {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            background-color: red;
+            height: 32px;
+         li{
+             list-style: none;
+             margin: 0  20px 0 0;
+             a{
+                 text-decoration: none;
+                 color: white;
+                 font-size: x-large;
+                
+             }
+         } 
+        }
+          
+         
+}

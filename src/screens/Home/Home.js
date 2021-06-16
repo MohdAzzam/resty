@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import './Main.scss';
+import './Home.scss';
 import ReactJson from 'react-json-view';
 import Form from "../Form/Form";
-import Loader from '../loading/loading';
+import Loader from "../../components/loading/loading";
+import History from "../History/History";
+import { useLocation } from "react-router-dom";
+import { useHistory } from 'react-router';
 
-export default function Main() {
-    const [history, setHisroty] = useState(false);
+export default function Home() {
+    const reactHistory = useHistory();
     const [responseData, setResponseData] = useState();
     const [url, setUrl] = useState();
     const [method, setMethod] = useState();
@@ -14,6 +17,26 @@ export default function Main() {
     const [displayData, setDisplayData] = useState();
     const [requestData, setRequestData] = useState();
     const [reponseHeaders, setReponseHeaders] = useState();
+    const [enableFetchData, setEnableFetchData] = useState(false);
+    
+    const search = useLocation().search;
+    const fetchData = new URLSearchParams(search).get('fetchData');
+
+    useEffect(() => {
+        if (fetchData) {
+
+            let targetHistory = localStorage.getItem('target-history-item');
+            if (targetHistory) {
+                targetHistory = JSON.parse(targetHistory);
+                setUrl(targetHistory.url);
+                setMethod(targetHistory.method);
+                setBody(targetHistory.body);
+                setEnableFetchData(true);
+                localStorage.removeItem('target-history-item');
+                reactHistory.replace(window.location.url, { fetchData: 0 });
+            }
+        }
+    }, [fetchData])
 
     useEffect(() => {
         if (responseData) {
@@ -23,13 +46,6 @@ export default function Main() {
     }, [responseData])
 
     useEffect(() => {
-        let temporaryHisroty = localStorage.getItem('response-history');
-        temporaryHisroty = temporaryHisroty ? JSON.parse(temporaryHisroty) : [];
-
-        setHisroty(temporaryHisroty)
-    }, [])
-
-    useEffect(() => {
         if (responseData && url && method) {
             setRequestData({
                 body: body ? [...body] : false,
@@ -37,7 +53,7 @@ export default function Main() {
                 method: [...method]
 
             });
-            let temporaryHisroty = localStorage.getItem('response-history');
+            let temporaryHisroty = localStorage.getItem('history');
             temporaryHisroty = temporaryHisroty ? JSON.parse(temporaryHisroty) : [];
             let isFind = false;
             temporaryHisroty.forEach((item) => {
@@ -56,41 +72,39 @@ export default function Main() {
                 url: url,
                 method: method
             });
-            setHisroty(temporaryHisroty);
-            localStorage.setItem("response-history", JSON.stringify(temporaryHisroty));
+            localStorage.setItem("history", JSON.stringify(temporaryHisroty));
 
         }
     }, [responseData, url, method, body])
 
 
-    function handlefilForm(item) {
-        setUrl(item.url);
-        setMethod(item.method);
-        setBody(item.body);
-    }
-
     return (
         <>
             <section className={"main " + (showloading ? "hold-body" : '')} id='main'>
-                {showloading ? (<Loader />) : []}
-                <Form
-                    setResponseData={setResponseData}
-                    url={url}
-                    method={method}
-                    body={body}
-                    setUrl={setUrl}
-                    setMethod={setMethod}
-                    setBody={setBody}
-                    setShowLoading={setShowLoading}
-                    setReponseHeaders={setReponseHeaders}
-                />
-                <HistoryList list={history} handlefilForm={handlefilForm} />
-                {displayData && requestData ? (
+                {showloading ? (<Loader />) : (
                     <div>
-                        <RequestData requestData={requestData} />
-                        <Resaults result={displayData} headers={reponseHeaders} />
+                        <Form
+                            setResponseData={setResponseData}
+                            url={url}
+                            method={method}
+                            body={body}
+                            setUrl={setUrl}
+                            setMethod={setMethod}
+                            setBody={setBody}
+                            setShowLoading={setShowLoading}
+                            setReponseHeaders={setReponseHeaders}
+                            enableFetchData={enableFetchData}
+                            setEnableFetchData={setEnableFetchData}
+                        />
+                        <History />
+                        {displayData && requestData ? (
+                            <div>
+                                <RequestData requestData={requestData} />
+                                <Resaults result={displayData} headers={reponseHeaders} />
+                            </div>
+                        ) : []}
                     </div>
-                ) : []}
+                )}
             </section>
         </>
     )
@@ -113,30 +127,6 @@ function RequestData({ requestData }) {
             ) : []}
         </div>
     )
-}
-
-
-function HistoryList({ list, handlefilForm }) {
-    if (list && Array.isArray(list) && list.length) {
-        return (
-            <div>
-                <label>History : </label>
-                {list.map((item, index) => (
-                    <div className="history-block" key={index} >
-                        <div className={item.method === "GET" ? 'get-button' : item.method === "POST" ? 'post-button' : item.method === "DELETE" ? 'delete-button' : 'put-button'}
-                            onClick={() => handlefilForm(item)}
-                        >
-                            {item.method}
-                        </div>
-                        <label>{item.url}</label>
-                        <br />
-
-                    </div>
-                ))}
-            </div>);
-    }
-
-    return [];
 }
 
 function Resaults({ result, headers }) {

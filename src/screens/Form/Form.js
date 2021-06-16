@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Form.scss';
 
 /**
@@ -14,7 +14,9 @@ export default function Form({
     setUrl,
     setBody,
     setMethod,
-    setShowLoading
+    setShowLoading,
+    enableFetchData,
+    setEnableFetchData
 }) {
     const [showErrorMessage, setShowErrorMessage] = useState(false);
 
@@ -37,8 +39,19 @@ export default function Form({
         }
     ];
 
+    useEffect(()=>{
+        if(enableFetchData){
+            fetchData();
+            setEnableFetchData(false);
+        }
+    },[enableFetchData,setEnableFetchData])
+
     function handleSubmit(event) {
         event.preventDefault();
+        fetchData();
+    }
+
+    function fetchData(){
         setShowLoading(true);
         setShowErrorMessage(false);
         setResponseData(false);
