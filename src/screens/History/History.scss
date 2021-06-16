@@ -1,25 +1,8 @@
-.main {
-    &.hold-body {
-        opacity: 0.3;
-        pointer-events: none;
-    }
-    width: 80%;
-    height: 900px;
-    background-color: #ccc;
-    margin: 0 auto;
-    padding: 5px;
-    // width: 500px;
-    // height: 110px;
-    overflow: auto;
-    text-align: justify;
-
-    section {
-        padding-top: 30px;
-        text-align: center;
-        width: 80%;
-        height: 50%;
-        background-color: gray;
-        margin: auto;
+.history-wrapper {
+    margin-top: 2rem;
+    .title {
+        font-weight: 700;
+        font-size: 1.5rem;
     }
     .history-block {
         display: flex;
@@ -34,7 +17,7 @@
             background-color: blue;
             padding: 0.5rem;
             margin-left: 1rem;
-            margin-right: 1rem;     
+            margin-right: 1rem;
         }
         .post-button {
             cursor: pointer;

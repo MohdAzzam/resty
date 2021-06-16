@@ -1,0 +1,24 @@
+.main {
+    &.hold-body {
+        opacity: 0.3;
+        pointer-events: none;
+    }
+    width: 80%;
+    height: 900px;
+    background-color: #ccc;
+    margin: 25px auto;
+    padding: 5px;
+    // width: 500px;
+    // height: 110px;
+    overflow: auto;
+    text-align: justify;
+
+    section {
+        padding-top: 30px;
+        text-align: center;
+        width: 80%;
+        height: 50%;
+        background-color: gray;
+        margin: auto;
+    }
+}
